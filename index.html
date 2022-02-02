@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Potter</title>
+</head>
+<body>
+    <input type="color" value="#ffffff" id="colorWell">
+    <img src="img/harry.jpg">
+    <p>Harry James Potter was an English half-blood wizard, and one of the most famous wizards of modern times. The only child and son of James and Lilly Pooter. Harry's birth was overshadowed by a prophecy, naming either himself of Neville Longbottom as the one with the power to vanquish Lord Voldemort, the most powerfl and feared Dark Wizard in the world.</p>
+</body>
+</html>
+
+<style>
+    img{
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+<script>
+
+document.getElementById("colorWell").addEventListener("change",function(){
+    document.body.style.backgroundColor=this.value;
+});
+
+
+</script>
