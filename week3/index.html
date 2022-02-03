@@ -1,30 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harry Potter</title>
 </head>
-<body>
+
+<div id="wrapper">
+    <section>
+        <div class="title">
+
+            <body id="body">
+                <h1>Harry Potter</h1>
+                <img src="img/harry.jpg">
+        </div>
+        <div class="biography">
+            <p>Harry James Potter was an English half-blood wizard, and one of the most famous wizards of modern times.
+                The
+                only
+                child and son of James and Lilly Pooter. Harry's birth was overshadowed by a prophecy, naming either
+                himself
+                of
+                Neville Longbottom as the one with the power to vanquish Lord Voldemort, the most powerfl and feared
+                Dark
+                Wizard
+                in the world.</p>
+        </div>
+    </section>
     <input type="color" value="#ffffff" id="colorWell">
-    <img src="img/harry.jpg">
-    <p>Harry James Potter was an English half-blood wizard, and one of the most famous wizards of modern times. The only child and son of James and Lilly Pooter. Harry's birth was overshadowed by a prophecy, naming either himself of Neville Longbottom as the one with the power to vanquish Lord Voldemort, the most powerfl and feared Dark Wizard in the world.</p>
-</body>
+    </body>
+</div>
+
+
+<button id="theme1">Theme 1</button>
+<button id="theme2">Theme 2</button>
+
+</div>
+
+
 </html>
 
 <style>
-    img{
-        width: 100%;
-        height: auto;
+    body {
+        background-color: purple;
+        color: black;
     }
+
+    img {
+        margin-left: auto;
+        margin-left: auto;
+        width: 100%;
+    }
+
+    h1,
+    p {
+        text-align: center;
+        margin: 0;
+    }
+
+    .theme1 {
+        color: blue;
+        background-color: red;
+    }
+
+    .theme2 {
+        color: orange;
+        background-color: yellow;
+    }
+
+    @media only screen and (min-width: 768px) {
+        section{
+            display: flex;
+        }
+        img{
+            margin-left: 10%;
+        
+        }
+        p{
+            margin: 10%;
+        }
+    }
+
 </style>
 
 <script>
 
-document.getElementById("colorWell").addEventListener("change",function(){
-    document.body.style.backgroundColor=this.value;
-});
+    var colorWell = document.getElementById("colorWell");
+    var defaultColor = "#ffffff";
+
+    if (localStorage.getItem('defaultColor')) {
+        defaultColor.value = localStorage.getItem('defaultColor')
+        body.style.backgroundColor = localStorage.getItem('defaultColor');
+    }
+    else {
+    }
+    function newColor() {
+        localStorage.setItem('defaultColor', colorWell.value)
+        body.style.backgroundColor = colorWell.value;
+    }
+
+
+    colorWell.addEventListener('input', newColor)
+
+    document.querySelector("#theme1").addEventListener('click', function () {
+        document.querySelector("#wrapper").classList.remove('theme2');
+        document.querySelector("#wrapper").classList.add('theme1');
+    });
+
+    document.querySelector("#theme2").addEventListener('click', function () {
+        document.querySelector("#wrapper").classList.remove('theme1');
+        document.querySelector("#wrapper").classList.add('theme2');
+    });
+
+    document.querySelector("#colorpicker").addEventListener('change', function () {
+        document.querySelector("#wrapper").style.backgroundColor = this.value;
+    });
 
 
 </script>
