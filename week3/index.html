@@ -46,11 +46,6 @@
 </html>
 
 <style>
-    body {
-        background-color: purple;
-        color: black;
-    }
-
     img {
         margin-left: auto;
         margin-left: auto;
@@ -64,7 +59,7 @@
     }
 
     .theme1 {
-        color: white;
+        color: orange;
         background-color: black;
     }
 
@@ -73,20 +68,6 @@
         background-color: orange;
     }
 
-    @media only screen and (min-width: 768px) {
-        section {
-            display: flex;
-        }
-
-        img {
-            margin-left: 10%;
-
-        }
-
-        p {
-            margin: 10%;
-        }
-    }
 </style>
 
 <script>
@@ -105,21 +86,20 @@
         body.style.backgroundColor = colorWell.value;
     }
 
-
     colorWell.addEventListener('input', newColor)
 
     document.querySelector("#theme1").addEventListener('click', function () {
-        document.querySelector("#wrapper").classList.remove('theme2');
-        document.querySelector("#wrapper").classList.add('theme1');
+        document.querySelector("#body").classList.remove('theme2');
+        document.querySelector("#body").classList.add('theme1');
     });
 
     document.querySelector("#theme2").addEventListener('click', function () {
-        document.querySelector("#wrapper").classList.remove('theme1');
-        document.querySelector("#wrapper").classList.add('theme2');
+        document.querySelector("#body").classList.remove('theme1');
+        document.querySelector("#body").classList.add('theme2');
     });
 
     document.querySelector("#colorpicker").addEventListener('change', function () {
-        document.querySelector("#wrapper").style.backgroundColor = this.value;
+        document.querySelector("#body").style.backgroundColor = this.value;
     });
 
 
