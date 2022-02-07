@@ -8,31 +8,34 @@
     <title>Harry Potter</title>
 </head>
 
-<div id="wrapper">
-    <section>
-        <div class="title">
+<body id="body">
+    <div id="wrapper">
+        <section>
+            <div class="title">
 
-            <body id="body">
-                <h1>Harry Potter</h1>
-                <img src="img/harry.jpg">
-        </div>
-        <div class="biography">
-            <p>Harry James Potter was an English half-blood wizard, and one of the most famous wizards of modern times.
-                The
-                only
-                child and son of James and Lilly Pooter. Harry's birth was overshadowed by a prophecy, naming either
-                himself
-                of
-                Neville Longbottom as the one with the power to vanquish Lord Voldemort, the most powerfl and feared
-                Dark
-                Wizard
-                in the world.</p>
-        </div>
-    </section>
-    <input type="color" value="#ffffff" id="colorWell">
-    </body>
-</div>
-
+                <div class="header">
+                    <h1>Harry Potter</h1>
+                    <img src="img/harry.jpg">
+                </div>
+                <div class="biography">
+                    <p>Harry James Potter was an English half-blood wizard, and one of the most famous wizards of modern
+                        times.
+                        The
+                        only
+                        child and son of James and Lilly Pooter. Harry's birth was overshadowed by a prophecy, naming
+                        either
+                        himself
+                        of
+                        Neville Longbottom as the one with the power to vanquish Lord Voldemort, the most powerfl and
+                        feared
+                        Dark
+                        Wizard
+                        in the world.</p>
+                </div>
+        </section>
+        <input type="color" value="#ffffff" id="colorWell">
+    </div>
+</body>
 
 <button id="theme1">Theme 1</button>
 <button id="theme2">Theme 2</button>
@@ -61,28 +64,29 @@
     }
 
     .theme1 {
-        color: blue;
-        background-color: red;
+        color: white;
+        background-color: black;
     }
 
     .theme2 {
-        color: orange;
-        background-color: yellow;
+        color: blue;
+        background-color: orange;
     }
 
     @media only screen and (min-width: 768px) {
-        section{
+        section {
             display: flex;
         }
-        img{
+
+        img {
             margin-left: 10%;
-        
+
         }
-        p{
+
+        p {
             margin: 10%;
         }
     }
-
 </style>
 
 <script>
