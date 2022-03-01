@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Source Firebase Library from the Google CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <!-- Source Cloud Firestore from the Google CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC184hiYDqWA_KYmWq6e10Z2bjoqOdI9kQ",
+            authDomain: "fir-495d0.firebaseapp.com",
+            projectId: "fir-495d0",
+            storageBucket: "fir-495d0.appspot.com",
+            messagingSenderId: "920879385932",
+            appId: "1:920879385932:web:88ebfa5cf600877a7813e9",
+            measurementId: "G-D1TK766W75"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        var db = firebase.firestore();
+
+    </script>
+
+</head>
+
+<body>
+    <h1>Task List from Firestore</h1>
+
+    <div id="add_new_wrap">
+        <input id="new_tast_text" type="text" placeholder="write your new task here">
+        <button id=""></button>
+    </div>
+
+    <ul id="my_list">
+        <li>Sample 1</li>
+        <li>Sample 2</li>
+    </ul>
+
+</body>
+
+</html>
+
+<style>
+    #my_list li:hover {
+        color: red;
+        text-decoration: line-through;
+        cursor: pointer;
+    }
+
+    #add_new_wrap {
+        width: 100%;
+        position: fixed;
+        background-color: #ccc;
+    }
+</style>
+
+<script>
+    const my_list = document.querySelector("my_list");
+    /** first, get live-updated listed of tasks from firestore **/
+
+    db.collection("tasks")
+        .onSnapshot((querySnapshot) => {
+            /**write code in here that responds to the fact that the collection changed **/
+
+            my_list.innerHTML = '';
+
+            querySnapshot.forEach((doc) => {
+                /** Instead of console.log, write each doc.date().name to the ul **/
+
+                var taskName = doc.data().name
+
+                var newLI = document.createElement("li");
+                newLI.innerHTML = taskName;
+
+                newLI.addEventListener('click', function () {
+                    deleteTask(doc.id);
+                })
+
+                my_list.appendChild(newLI);
+            });
+        });
+
+
+</script>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Source Firebase Library from the Google CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <!-- Source Cloud Firestore from the Google CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+
+    <script>
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyAysR7DDEGdKN6oswho9E9GnROu_GkHY7U",
+            authDomain: "shopping-list-c8134.firebaseapp.com",
+            projectId: "shopping-list-c8134",
+            storageBucket: "shopping-list-c8134.appspot.com",
+            messagingSenderId: "750669206875",
+            appId: "1:750669206875:web:ca537ef36fee8d324cf67e",
+            measurementId: "G-VMVV993PQX"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <h1>Shopping List</h1>
+            </div>
+            <div id="add_new_wrap">
+                <p>
+                    <input id="new_task_text" type="text" placeholder="Enter your shopping list item here">
+                </p>
+                <p>
+                    <input id="task_notes_input" type="text" placeholder="Enter your shopping list notes here">
+                </p>
+                <button id="add_new_button">Add Item</button>
+            </div>
+        </div>
+
+        <div id="active-item-list">
+            <h2>Active Shopping List</h2>
+            <div id="active-item">
+                <div class="check-box">
+                </div>
+                <div class="single-item">
+                    <h3>Pasta</h3>
+                    <p>1 box of spaghetti and 1 box of bow ties</p>
+                </div>
+                <img class="delete" src="img/x.svg">
+            </div>
+
+        </div>
+
+        <div id="complete-item-list">
+            <h2>Completed Shopping List</h2>
+            <div id="complete-item">
+                <img class="complete" src="img/check.svg">
+                <div class="single-item">
+                    <h3>Grapes</h3>
+                    <p>1 red bunch and 1 green bunch</p>
+                </div>
+                <img class="delete" src="img/x.svg">
+            </div>
+        </div>
+
+
+
+
+
+
+</body>
+
+</html>
+
+<style>
+    body {
+        background-color: #f0f0f3;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .header {
+        width: 90%;
+        height: 320px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        border-radius: 20px;
+        background: #318aef;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    .title h1 {
+        color: #ffffff;
+        padding-top: 20px;
+    }
+
+    h2 {
+        margin-left: 4%;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+
+    #new_task_text,
+    #task_notes_input {
+        width: 300px;
+        height: 50px;
+        margin: 10px;
+        border: none;
+        color: white;
+        border-radius: 20px;
+        background-color: #318aef;
+        box-shadow:
+            inset -10px -10px 10px #2494fc,
+            inset 10px 10px 10px #2a75cb;
+    }
+
+    ::placeholder {
+        color: #1b508d;
+    }
+
+    input {
+        padding-left: 20px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    button {
+        font-family: 'Poppins', sans-serif;
+        height: 35px;
+        margin: 20px;
+        width: 120px;
+        border: none;
+        border-radius: 50px;
+        background-color: white;
+        color: #318aef;
+    }
+
+    button:hover {
+        color: white;
+        background-color: black;
+        cursor: pointer;
+    }
+
+    /*#active-item,*/
+    #complete-item {
+        width: 90%;
+        height: auto;
+        margin-top: 20px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-bottom: 25px;
+        display: flex;
+        border-radius: 30px;
+        background: #f0f0f3;
+        box-shadow:
+            inset -10px -10px 10px #ffffff70,
+            inset 10px 10px 10px #aeaec020;
+    }
+
+
+    .delete {
+        margin-top: 35px;
+        margin-right: 30px;
+        height: 28px;
+        float: right;
+    }
+
+    .delete:hover {
+        color: red;
+        cursor: pointer;
+    }
+
+    .complete {
+        float: left;
+        height: 20px;
+        margin-top: 35px;
+        margin-left: 20px;
+    }
+
+    .check-box {
+        margin-top: 35px;
+        margin-left: 20px;
+        height: 15px;
+        width: 15px;
+        border: 2px solid black;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .check-box:hover {
+        border: 2px solid #318aef;
+        cursor: pointer;
+    }
+
+    .single-item {
+        padding-top: 22px;
+        padding-left: 20px;
+        margin-right: auto;
+    }
+
+    h3 {
+        margin: 0;
+        padding-bottom: 10px;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    /* */
+
+    li {
+        width: 90%;
+        height: auto;
+        margin-top: 20px;
+        margin-right: auto;
+        margin-left: auto;
+        padding-top: 20px;
+        padding-bottom: 25px;
+        padding-left: 30px;
+        display: flex;
+        border-radius: 30px;
+        background: #f0f0f3;
+        box-shadow:
+            inset -10px -10px 10px #ffffff70,
+            inset 10px 10px 10px #aeaec020;
+    }
+</style>
+
+<script>
+
+    /** CREATE REFERENCES TO ELEMENTS **/
+    const active_item = document.querySelector("#active-item");
+    const new_button = document.getElementById("#add_new_button");
+
+
+    /** GET A LIVE UPDATED SHOPPING LIST FROM FIRESTORE **/
+    db.collection("shopping-list")
+
+        .onSnapshot((querySnapshot) => {
+
+            active_item.innerHTML = " "
+
+            querySnapshot.forEach((doc) => {
+                var taskName = doc.data().name;
+                var taskNote = doc.data().note;
+                var status = doc.data().status;
+
+
+                newli = document.createElement("li")
+                newli.innerHTML = taskName;
+
+                active_item.appendChild(newli);
+            });
+        });
+
+
+
+
+    /** ADD LIVE UPDATED SHOPPING LIST TO ITEM LIST **/
+
+    
+       
+    /** MARK TASK LIST ITEM AS COMPLETE **/
+
+    /** DELETE TASK LIST ITEM **/
+
+    /** ADD MARKED TASK TO ARCHIVE LIST **/
+
+</script>
