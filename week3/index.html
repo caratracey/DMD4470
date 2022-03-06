@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harry Potter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 
 <body id="body">
@@ -33,12 +36,14 @@
                         in the world.</p>
                 </div>
         </section>
-        <input type="color" value="#ffffff" id="colorWell">
+        <p>Choose Background Color<input type="color" value="#ffffff" id="colorPicker"></p>
     </div>
 </body>
 
-<button id="theme1">Theme 1</button>
-<button id="theme2">Theme 2</button>
+<div class = "buttons">
+    <button id="theme1">Theme 1</button>
+    <button id="theme2">Theme 2</button>
+</div>
 
 </div>
 
@@ -52,28 +57,67 @@
         width: 100%;
     }
 
-    h1,
-    p {
+    h1{
+        font-family: 'Bebas Neue', cursive;
+        font-size: 80px;
         text-align: center;
         margin: 0;
     }
 
+
+    p {
+        font-family: 'Open Sans', sans-serif;
+        padding-top: 10px;
+        margin: 10px;
+
+    }
+
+    #colorPicker{
+        border: none;
+        margin-top: 3px;
+        margin-left: 15px;
+    }
+
     .theme1 {
-        color: orange;
-        background-color: black;
+        color:red;
+        background: yellow;
     }
 
     .theme2 {
         color: blue;
-        background-color: orange;
     }
+
+    button{
+        border-radius: 80px;
+        border: none;
+        margin: 5px;
+        padding: 12px;
+        width: 100px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;
+        background-color: white;
+        color: rgb(0, 0, 0)
+    }
+
+    button:hover{
+        background-color: rgb(0, 0, 0);
+        color:white;
+    }
+
+    .buttons{
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 40px;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+   
 
 </style>
 
 <script>
 
-    var colorWell = document.getElementById("colorWell");
-    var defaultColor = "#ffffff";
+    var colorPicker = document.getElementById("colorPicker");
+    var defaultColor = "#FFFFFF";
 
     if (localStorage.getItem('defaultColor')) {
         defaultColor.value = localStorage.getItem('defaultColor')
@@ -82,11 +126,12 @@
     else {
     }
     function newColor() {
-        localStorage.setItem('defaultColor', colorWell.value)
-        body.style.backgroundColor = colorWell.value;
+        localStorage.setItem('defaultColor', colorPicker.value)
+        body.style.backgroundColor = colorPicker.value;
     }
 
-    colorWell.addEventListener('input', newColor)
+    newColor();
+    colorPicker.addEventListener('input', newColor)
 
     document.querySelector("#theme1").addEventListener('click', function () {
         document.querySelector("#body").classList.remove('theme2');
