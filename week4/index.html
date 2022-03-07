@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <h1>Contacts</h1>
+    <div id="contact-list"></div>
+
+</body>
+
+</html>
+
+<style>
+    body{
+        font-family: 'Montserrat', sans-serif;
+    }
+
+</style>
+
+<script>
+    let url = 'https://uconndxlab.github.io/json-phonebook-example/dxlab-staff.json'
+
+    fetch(url)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            appendData(data);
+        })
+        .catch(function (err) {
+            console.log('error: ' + err);
+        });
+
+    function appendData(data) {
+        var mainContainer = document.getElementById("contact-list");
+        for (i in data.contacts) {
+            var contactName = document.createElement("h2");
+            var contactTitle = document.createElement("h3");
+            var contactEmail = document.createElement("p");
+            var contactPhone = document.createElement("p");
+            var contactBirth = document.createElement("p");
+            contactName.innerHTML = data.contacts[i].firstname + ' ' + data.contacts[i].lastname;
+            contactTitle.innerHTML = data.contacts[i].title;
+            contactEmail.innerHTML = data.contacts[i].email;
+            contactPhone.innerHTML = data.contacts[i].phone;
+            contactBirth.innerHTML = data.contacts[i].birthdate;
+            mainContainer.appendChild(contactName);
+            mainContainer.appendChild(contactTitle)
+            mainContainer.appendChild(contactEmail)
+            mainContainer.appendChild(contactPhone)
+            mainContainer.appendChild(contactBirth)   
+        }
+    }
+
+</script>
