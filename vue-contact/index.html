@@ -1,12 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue Demo</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <title>Vue Demo</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <!-- Source Cloud Firestore from the Google CDN -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+  <script>
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyC184hiYDqWA_KYmWq6e10Z2bjoqOdI9kQ",
+      authDomain: "fir-495d0.firebaseapp.com",
+      projectId: "fir-495d0",
+      storageBucket: "fir-495d0.appspot.com",
+      messagingSenderId: "920879385932",
+      appId: "1:920879385932:web:88ebfa5cf600877a7813e9",
+      measurementId: "G-D1TK766W75"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+
+  </script>
+
+
 </head>
+
 <body>
-    
+  <div id="app">
+    <h1>{{app_title}}</h1>
+    <h2>{{app_subhead}}</h2>
+
+    <div id="inputs">
+      <div>
+        <input v-model="new_task.task" type="text" placeholder="Enter Task">
+      </div>
+      <div>
+        <input v-model="new_task.notes" type="text" placeholder="Write your notes here">
+      </div>
+      <div>
+      <input v-model="new_task.date" type="date">
+      </div>
+      <div>
+        <button @click="newTask();">Add Task</button>
+      </div>
+    </div>
+
+    <ul id="list">
+      <li id="list-item" v-for="item in tasks" :key="item.id">
+        <div style="font-weight: 800;">{{item.task}}</div>
+        <div>Notes: {{item.notes}}</div>
+        <div>Due Date: {{item.date}}</div>
+        <button @click="completeTask();" id="complete">Complete</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: function () {
+        return {
+          app_title: 'To-Do List',
+          app_subhead: "Created with Vue",
+          new_task: {
+            task: "Enter task",
+            notes: "Write you notes here",
+            date: [],
+            status: "active",
+          },
+          complete_task:{
+            task: "Enter task",
+            notes: "Write you notes here",
+            date: [],
+            status: "complete",
+          },
+          tasks: [
+          ]
+        }
+      },
+
+      methods: {
+        newTask: function () {
+          db.collection("tasks").add({
+            task: this.new_task.task,
+            notes: this.new_task.notes,
+            date: this.new_task.date,
+            status: this.new_task.status,
+          })
+          console.log(task)
+            .then(() => {
+              console.log("Document successfully written!");
+            })
+            .catch((error) => {
+              console.error("Error writing document: ", error);
+            });
+        },
+
+        getTasksfromFirestore(orderBy) {
+          db.collection("tasks").orderBy(orderBy)
+            .onSnapshot((querySnapshot) => {
+              this.tasks = [];
+              querySnapshot.forEach((doc) => {
+                this.tasks.push({
+                  task: doc.data().task,
+                  notes: doc.data().notes,
+                  date: doc.data().date,
+                  status: doc.data().status,
+                  id: doc.id
+                });
+              });
+            });
+        },
+
+        completeTask: function () {
+          db.collection("tasks").add({
+            task: this.complete_task.task,
+            notes: this.complete_task.notes,
+            date: this.complete_task.date,
+            status: this.complete_task.status,
+          })
+          console.log(task)
+            .then(() => {
+              console.log("Document successfully written!");
+            })
+            .catch((error) => {
+              console.error("Error writing document: ", error);
+            });
+        },
+      
+
+        updateTasks(data) {
+
+          let docId = data.id
+
+          var docRef = db.collection("tasks").doc(docId);
+
+          // Set the "capital" field of the city 'DC'
+          return docRef.update({
+            task: data.task,
+            notes: data.notes,
+            date: data.date,
+            status: data.status,
+          })
+            .then(() => {
+              console.log("Document successfully updated!");
+            })
+            .catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+        }
+      },
+      mounted() {
+        this.getTasksfromFirestore("task");
+      }
+    })
+
+  </script>
+
 </body>
+
 </html>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+  #app {
+    width: 500px;
+    height: auto;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 18px;
+    padding-bottom: 10px;
+    text-align: center;
+  }
+
+  #inputs {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  input {
+    margin-bottom: 10px;
+    width: 200px;
+
+  }
+
+  button{
+    margin-top: 10px;
+    height: 40px;
+    border-radius: 50px;
+    width: 100px;
+    border: none;
+    background-color: #BF1015;
+    color: white
+  }
+
+  #complete{
+    margin-top: 10px;
+    height: 40px;
+    border-radius: 50px;
+    width: 100px;
+    border: none;
+    background-color: green;
+    color: white
+  }
+
+  #list {
+    padding-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 65px;
+  }
+
+  #list-item{
+    padding-bottom: 20px;
+  }
+
+  .dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
