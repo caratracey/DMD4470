@@ -58,13 +58,11 @@
             </div>
         </div>
 
-        <div class ="button-edit">
-            <button id = "edit">Edit</button>
-        </div>
 
+        <h2>Active Shopping List</h2>
         <div id="active-item-list">
-            <h2>Active Shopping List</h2>
-            <div id="active-item">
+            <!-- This list should be generated from Firestore, where status == "active" -->
+            <!-- <div class="active-item">
                 <div class="check-box">
                 </div>
                 <div class="single-item">
@@ -74,58 +72,23 @@
 
                 </div>
                 <img class="delete" src="img/x.svg">
-            </div>
-            <div id="active-item">
-                <div class="check-box">
-                </div>
-                <div class="single-item">
-                    <h3>Orange Juice</h3>
-                    <p>Pulp!</p>
-                </div>
-                <img class="delete" src="img/x.svg">
-            </div>
-            <div id="active-item">
-                <div class="check-box">
-                </div>
-                <div class="single-item">
-                    <h3>Beans</h3>
-                    <p>1 can kidney and 1 can black</p>
-                </div>
-                <img class="delete" src="img/x.svg">
-            </div>
-
+            </div> -->
 
         </div>
-
+        <h2>Completed Shopping List</h2>
         <div id="completed-item-list">
-            <h2>Completed Shopping List</h2>
 
-            <div id="complete-item">
+            <!-- This list should be generated from Firestore, where status == "complete" -->
+
+            <!-- <div id="complete-item">
                 <img class="complete" src="img/check.svg">
                 <div class="single-item">
                     <h3>Coffee Grounds</h3>
                     <p>Dunkin medium</p>
                 </div>
                 <img class="delete" src="img/x.svg">
-            </div>
+            </div> -->
 
-            <div id="complete-item">
-                <img class="complete" src="img/check.svg">
-                <div class="single-item">
-                    <h3>Bread</h3>
-                    <p>1 sourdough</p>
-                </div>
-                <img class="delete" src="img/x.svg">
-            </div>
-
-            <div id="complete-item">
-                <img class="complete" src="img/check.svg">
-                <div class="single-item">
-                    <h3>Dish Washer Soap</h3>
-                    <p>Mrs. Meyer's lavender</p>
-                </div>
-                <img class="delete" src="img/x.svg">
-            </div>
 
         </div>
 
@@ -207,22 +170,9 @@
         cursor: pointer;
     }
 
-    #edit{
-        font-family: 'Poppins', sans-serif;
-        height: 35px;
-        width: 70px;
-        margin-top: 20px;
-        margin-right: 8%;
-        float: right;
-        border: none;
-        border-radius: 50px;
-        background-color: #e54343;
-        color: white;
-
-    }
-
-    #active-item,
-    #complete-item {
+ 
+    .active-item,
+    .complete-item {
         width: 90%;
         height: auto;
         margin-top: 20px;
@@ -238,7 +188,6 @@
     }
 
     #active-item-list{
-        padding-top: 70px;
         padding-bottom: 20px;
     }
 
@@ -321,36 +270,169 @@
     }
     */
 </style>
+            <!-- <div class="active-item">
+                <div class="check-box">
+                </div>
+                <div class="single-item">
+                    <h3>Pasta</h3>
+                    <p>1 box of spaghetti and 1 box of bow ties
+                    </p>
 
+                </div>
+                <img class="delete" src="img/x.svg">
+            </div> -->
 <script>
 
-    /** CREATE REFERENCES TO ELEMENTS
-    const active_item = document.querySelector("#active-item");
-    const new_button = document.getElementById("#add_new_button");
-**/
-
-    /** GET A LIVE UPDATED SHOPPING LIST FROM FIRESTORE
-    db.collection("shopping-list")
-
-        .onSnapshot((querySnapshot) => {
-
-            active_item.innerHTML = " "
-
-            querySnapshot.forEach((doc) => {
-                var taskName = doc.data().name;
-                var taskNote = doc.data().note;
-                var status = doc.data().status;
+    // CREATE REFERENCES TO ELEMENTS
+    const active_item_list = document.querySelector("#active-item-list");
+    const completed_item_list = document.querySelector("#completed-item-list");
+    const new_task_text = document.querySelector("#new_task_text");
+    const new_task_notes = document.querySelector("#task_notes_input");
+    const add_new_button = document.querySelector("#add_new_button");
 
 
-                newli = document.createElement("li")
-                newli.innerHTML = taskName;
 
-                active_item.appendChild(newli);
+    function createItemDiv(id, name, status, notes){
+        /** create the div, and add it to the appropriate section of the page **/
+        
+        var wrapper = document.createElement("div");
+            wrapper.classList.add("active-item");
+
+        var checkBoxDiv = document.createElement("div");
+            checkBoxDiv.classList.add("check-box");
+            /** Attach an event listener to CheckBoxDiv which changes the status of the item to COMPLETE when clicked. **/
+
+        
+        var singleItemDiv = document.createElement("div");
+            singleItemDiv.classList.add("single-item");
+            singleItemDiv.innerHTML = `<h3>${name}</h3>
+                    <input id="edit-notes" type="text" value="${notes}"></input>`
+
+        var deleteImg = document.createElement("img");
+            deleteImg.classList.add("delete");
+            deleteImg.src = "img/x.svg";
+            deleteImg.addEventListener("click", function() {
+                deleteItem(id);
             });
+
+        wrapper.appendChild(checkBoxDiv);
+        wrapper.appendChild(singleItemDiv);
+        wrapper.appendChild(deleteImg);
+
+        if(status == "complete") {
+            checkBoxDiv.addEventListener("click", function(){
+                updateItemStatus(id,"active")
+            })
+
+            completed_item_list.appendChild(wrapper);
+        } else {
+            checkBoxDiv.addEventListener("click", function(){
+                updateItemStatus(id,"complete")
+            })
+            active_item_list.appendChild(wrapper);
+        } 
+    }
+
+    //Create a function that changes the note on click
+    //After inputing item and note, be able to input edits to the note that save and are there after reload
+
+
+
+    /** Testing the CreateItemDiv Function **
+
+    // createItemDiv("sample active", "active", "test notes");
+    // createItemDiv("sample complete", "complete", "test notes");
+
+    /** GET A LIVE UPDATED SHOPPING LIST FROM FIRESTORE **/
+    function getLiveUpdatedList() {
+        db.collection("shopping-list")
+            .onSnapshot((querySnapshot) => {
+                active_item_list.innerHTML ="";
+                completed_item_list.innerHTML = "";
+                querySnapshot.forEach((doc) => {
+                    var taskName = doc.data().name;
+                    var taskNote = doc.data().notes;
+                    var taskStatus = doc.data().status;
+                    var docID = doc.id;
+
+                    createItemDiv(docID, taskName, taskStatus, taskNote);
+
+                });
         });
+    }
+        
+    function createItemInFirestore(name, notes) {
+        // Add a new document with a generated id.
+        db.collection("shopping-list").add({
+            name: name,
+            notes: notes,
+            status:"active"
+        })
+        .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
+    }
 
-        **/
+    function updateItemStatus(id, status) {
+        /** Update doc(id) with new status **/
+        var docRef = db.collection("shopping-list").doc(id);
+        // Set the "capital" field of the city 'DC'
+        return docRef.update({
+            status: status
+        })
+        .then(() => {
+            console.log("Document successfully updated!");
+        })
+        .catch((error) => {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+        });
+    }
+
+    //create a function that saves the edited note on reload
+    function editNotesInFirestore(id, notes){
+        db.collection("shopping-list").doc(id).update({
+            notes: notes
+        })
+        .then(() => {
+            console.log("Notes successfully edited!");
+        })
+        .catch((error) => {
+            // The document probably doesn't exist.
+            console.error("Error editing notes: ", error);
+        });
+    }
 
 
 
+    function deleteItem(id) {
+        db.collection("shopping-list").doc(id).delete().then(() => {
+        console.log("Document successfully deleted!");
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+        });
+    }
+
+  
+    /** When form button is clicked, call the createItemInFirestore function with form data **/
+
+    add_new_button.addEventListener("click", function() {
+        var newName = new_task_text.value;
+        var newNotes = new_task_notes.value;
+        createItemInFirestore(newName, newNotes);
+        new_task_text.value="";
+        new_task_notes.value="";
+    });
+
+    
+
+    
+
+    
+
+
+getLiveUpdatedList();
 </script>

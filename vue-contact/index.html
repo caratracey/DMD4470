@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-  <title>Vue Demo</title>
+  <title>To-Do</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <!-- Source Cloud Firestore from the Google CDN -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -63,6 +63,13 @@
         <button @click="completeTask();" id="complete">Complete</button>
       </li>
     </ul>
+    <ul id="list">
+      <li id="list-item" v-for="item in completed_tasks" :key="item.id">
+        <div style="font-weight: 800;">{{item.task}}</div>
+        <div>Notes: {{item.notes}}</div>
+        <div>Due Date: {{item.date}}</div>
+      </li>
+    </ul>
   </div>
 
   <script>
@@ -85,7 +92,10 @@
             status: "complete",
           },
           tasks: [
-          ]
+          ],
+          completed_tasks:[
+
+          ],
         }
       },
 
@@ -111,7 +121,10 @@
             .onSnapshot((querySnapshot) => {
               this.tasks = [];
               querySnapshot.forEach((doc) => {
-                this.tasks.push({
+                var list = this.tasks
+                if (doc.data().status == "complete")
+                list = this.completed_tasks
+                list.push({
                   task: doc.data().task,
                   notes: doc.data().notes,
                   date: doc.data().date,
@@ -124,10 +137,10 @@
 
         completeTask: function () {
           db.collection("tasks").add({
-            task: this.complete_task.task,
-            notes: this.complete_task.notes,
-            date: this.complete_task.date,
-            status: this.complete_task.status,
+            task: data.task,
+            notes: data.notes,
+            date: data.date,
+            status: data.status,
           })
           console.log(task)
             .then(() => {

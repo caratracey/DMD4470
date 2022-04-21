@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <title>Vue Demo</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Source Cloud Firestore from the Google CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+
+    <script>
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyC184hiYDqWA_KYmWq6e10Z2bjoqOdI9kQ",
+            authDomain: "fir-495d0.firebaseapp.com",
+            projectId: "fir-495d0",
+            storageBucket: "fir-495d0.appspot.com",
+            messagingSenderId: "920879385932",
+            appId: "1:920879385932:web:88ebfa5cf600877a7813e9",
+            measurementId: "G-D1TK766W75"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+
+    </script>
+
+
+    <style>
+
+    </style>
+
+</head>
+
+<body>
+    <div id="app">
+        <h1>{{app_title}}</h1>
+        <h2>{{app_subhead}}</h2>
+
+        <ul>
+            <li v-for="item in contacts" :key="item.id">
+                <a href="‘mailto:’ + item.email">{{item.first}} {{item.last}}</a>:
+                <input type="text" @change="updateContacts(item)" v-model="item.phone">
+                ({{item.notes}})
+            </li>
+        </ul>
+
+        <div>
+            <input v-model="new_contact.first" type="text" placeholder="First Name">
+            <input v-model="new_contact.last" type="text" placeholder="Last Name">
+            <input v-model="new_contact.email" type="email" placeholder="Email">
+            <input v-model="new_contact.phone" type="tel" placeholder="Phone">
+            <input v-model="new_contact.notes" type="text" placeholder="Notes">
+            <button @click="newContact();">Save New Contact</button>
+        </div>
+
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    app_title: 'My Vue Contact List',
+                    app_subhead: "Using Vue to Manipulate the DOM",
+                    new_contact: {
+                        first: "First",
+                        last: "Last",
+                        phone: "000-000-0000",
+                        email: "email@uconn.edu",
+                        notes: "Write your notes here"
+                    },
+                    contacts: [
+
+                    ]
+                }
+            },
+            methods: {
+                newContact: function () {
+                    db.collection("contacts").add({
+                        firstname: this.new_contact.first,
+                        lastname: this.new_contact.last,
+                        phone: this.new_contact.phone,
+                        email: this.new_contact.email,
+                        notes: this.new_contact.notes,
+                    })
+                        .then(() => {
+                            console.log("Document successfully written!");
+                        })
+                        .catch((error) => {
+                            console.error("Error writing document: ", error);
+                        });
+                },
+
+                getContactsfromFirestore(orderBy) {
+                    db.collection("contacts").orderBy(orderBy)
+                        .onSnapshot((querySnapshot) => {
+                            this.contacts = [];
+                            querySnapshot.forEach((doc) => {
+                                this.contacts.push({
+                                    first: doc.data().firstname,
+                                    last: doc.data().lastname,
+                                    phone: doc.data().phone,
+                                    email: doc.data().email,
+                                    notes: doc.data().notes,
+                                    id: doc.id
+                                });
+                            });
+                        });
+
+                },
+                updateContacts(data) {
+
+                    let docId = data.id
+
+                    var docRef = db.collection("contacts").doc(docId);
+
+                    // Set the "capital" field of the city 'DC'
+                    return docRef.update({
+                        firstname:data.first,
+                        lastname:data.last,
+                        phone:data.phone,
+                        email:data.email,
+                        notes:data.notes,
+                    })
+                        .then(() => {
+                            console.log("Document successfully updated!");
+                        })
+                        .catch((error) => {
+                            // The document probably doesn't exist.
+                            console.error("Error updating document: ", error);
+                        });
+
+
+
+                }
+            },
+            mounted() {
+                this.getContactsfromFirestore("firstname");
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>
