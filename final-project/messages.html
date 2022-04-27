@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Source Cloud Firestore from the Google CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
+
+    <script src="firebase.js"></script>
+
+
+    <title>Paratweet</title>
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <v-main>
+                <v-toolbar elevation="4">
+                
+                    <v-img src="img/bird2.png" alt="Paratweet Icon" contain height="50">
+                   
+                    <v-btn  href="profile.html" icon>
+                        <v-icon>mdi-account-circle</v-icon>
+                      </v-btn>
+                
+                      <v-btn  href="messages.html" icon>
+                        <v-icon>mdi-send</v-icon>
+                      </v-btn>
+                
+                    </v-img>
+
+                </v-toolbar>
+                <v-container class="py-0 fill-height" fluid
+                    style="background: url('img/background6.jpg') no-repeat center center fixed; background-size:cover">
+                    <v-row align="center" justify="center" class="pa-4">
+                        <v-card width="550px" elevation="12" shaped class="rounded-lg pa-8">
+                            <h3 class="pl-4 pr-4">Tweet, tweet!</h3>
+                            <v-card-text>
+                                <v-form>
+                                    <v-text-field class="pb-8" label="Username" name="email" type="email">
+                                    </v-text-field>
+                                    <v-text-field counter="280" v-model="new_tweet" class="pb-8" label="Message" name="tweet"
+                                        type="text">
+                                    </v-text-field>
+                                    
+                                    <v-btn @click="addNewTweet()" rounded color="primary" x-large block
+                                        style="background: linear-gradient(90deg, rgba(97,208,248,1) 0%, rgba(98,141,246,1) 50%, rgba(136,81,246,1) 100%);">
+                                        Send Message</v-btn>
+                                </v-form>
+                            </v-card-text>
+
+                        </v-card>
+                    </v-row>
+
+                
+                </v-container>
+            </v-main>
+        </v-app>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
