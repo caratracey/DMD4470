@@ -6,7 +6,8 @@ var app = new Vue({
       my_username: "caratracey",
       tweets: [],
       new_tweet: "",
-      retweet: ""
+      publishedAt: firebase.firestore.FieldValue.serverTimestamp()
+
     }
   },
 
@@ -50,6 +51,8 @@ var app = new Vue({
         });
     },
 
+    
+
     likeTweet: function (docID) {
       var docRef = db.collection("tweets").doc(docID);
 
@@ -84,6 +87,7 @@ var app = new Vue({
         });
     },
     
+    
     addNewTweet: function () {
       // get the current value of new_tweet
       var new_tweet_text = this.new_tweet;
@@ -103,24 +107,32 @@ var app = new Vue({
         });
     },
 
+    makeAccount(){
+      const usersRef = db.collection("users").doc(document.getElementById('username').value)
+      usersRef.get()
+        .then ((docSnapshot) => {
+          if (docSnapshot.exists){
+            alert ("Username taken. Please try another.")
+          }
+          else{
+            usersRef.set({
+              first: document.getElementById('first').value,
+              last: document.getElementById('last').value,
+              bio: document.getElementById('bio').value,
+              password: document.getElementById('password').value,
+              avatar: localStorage.getItem('pigeon_avatar')
 
-    reTweet: function () {
-      // get the current value of new_tweet
-      var new_tweet_text = this.retweet;
-      var active_username = this.my_username;
-      db.collection("tweets").add({
-        username: active_username,
-        content: retweet,
-        timestamp: new Date(),
-        likes: [],
+            })
+            .then(() => {
+              console.log("Document successfully written!");
+              localStorage.setItem('pigeon_user', document.getElementById('username').value)
+              window.location.replace("home.html")
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            })
+          }
       })
-        .then(() => {
-          console.log("Document successfully written!");
-          this.retweet = "";
-        })
-        .catch((error) => {
-          console.error("Error writing document: ", error);
-        });
     }
   },
 
