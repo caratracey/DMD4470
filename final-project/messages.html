@@ -32,7 +32,7 @@
         <v-app>
             <v-main>
                 <v-toolbar elevation="4">
-                
+
                     <v-img src="img/bird2.png" alt="Paratweet Icon" contain height="50">
 
                         <v-btn href="home-page.html" icon>
@@ -61,13 +61,15 @@
                             <h3 class="pl-4 pr-4">Tweet, tweet!</h3>
                             <v-card-text>
                                 <v-form>
-                                    <v-text-field class="pb-8" label="Username" name="email" type="email">
+                                    <v-text-field v-model="new_user" class="pb-8" label="Username"
+                                    name="tweet" type="text">
                                     </v-text-field>
-                                    <v-text-field counter="280" v-model="new_tweet" class="pb-8" label="Message" name="tweet"
-                                        type="text">
+
+                                    <v-text-field counter="280" v-model="new_message" class="pb-8" label="Message"
+                                        name="tweet" type="text">
                                     </v-text-field>
-                                    
-                                    <v-btn @click="addNewTweet()" rounded color="primary" x-large block
+
+                                    <v-btn @click="addNewMessage()" rounded color="primary" x-large block
                                         style="background: linear-gradient(90deg, rgba(97,208,248,1) 0%, rgba(98,141,246,1) 50%, rgba(136,81,246,1) 100%);">
                                         Send Message</v-btn>
                                 </v-form>
@@ -76,7 +78,36 @@
                         </v-card>
                     </v-row>
 
-                
+                    <v-row v-for="message in messages" align="center" justify="center" class="pa-4">
+                        <v-card class="mx-auto" color="#ffffff" width="550px">
+                                <v-list-item class="grow">
+                                    <v-list-item-content>
+                                       <h3><v-list-item-title>{{message.to}}</v-list-item-title></h3>
+                                    </v-list-item-content>
+                                </v-list-item>
+                        
+                            <v-card-text>
+                                <h3 class="pt-5">{{message.content}}</h3>
+                                <p class="pt-5">{{message.timestamp}}</p>
+                            </v-card-text>
+                            
+                            <v-card-actions>
+                                <v-list-item class="grow">
+                                    <v-list-item-avatar color="grey darken-5">
+                                        <v-img class="elevation-6" alt=""
+                                            src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light'">
+                                        </v-img>
+                                    </v-list-item-avatar>
+
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{message.username}}</v-list-item-title>
+                                    </v-list-item-content>
+
+                                    </v-row>
+                                </v-list-item>
+                            </v-card-actions>
+
+                    </v-row>
                 </v-container>
             </v-main>
         </v-app>

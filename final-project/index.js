@@ -6,12 +6,16 @@ var app = new Vue({
       my_username: "caratracey",
       tweets: [],
       new_tweet: "",
-      publishedAt: firebase.firestore.FieldValue.serverTimestamp()
+      messages: [],
+      new_user: "",
+      new_message: "",
 
     }
   },
 
-  methods: {
+
+  methods:
+  {
     getTweetsFromFirestore() {
 
       // connect to the "tweets" collection in firestore
@@ -41,7 +45,6 @@ var app = new Vue({
                 id: doc.id,
                 content: tweet.content,
                 likes: tweet.likes,
-                timestamp: tweet.timestamp,
                 username: tweet.username,
                 numberOfLikes: numberOfLikes,
                 isLiked: isLiked
@@ -51,12 +54,44 @@ var app = new Vue({
         });
     },
 
-    
+
+    getMessagesFromFirestore() {
+
+      // connect to the "tweets" collection in firestore
+      db.collection("messages").orderBy("timestamp", "desc")
+
+        // watch for a new "version" of the tweets collection
+        .onSnapshot((querySnapshot) => {
+
+          // empty the tweets array
+          this.messages = [];
+
+          // loop through the new collection
+          querySnapshot.forEach((doc) => {
+            // reference to our local copy
+            var list = this.messages;
+
+            // reference to the current document in firestore
+            var message = doc.data();
+           
+            // add the current tweet to the list
+            list.push(
+              {
+                id: doc.id,
+                to: message.to,
+                content: message.content,
+                username: message.username,
+              }
+            )
+          });
+        });
+    },
+
+
+  
 
     likeTweet: function (docID) {
       var docRef = db.collection("tweets").doc(docID);
-
-
       return docRef
         .update({
           likes: firebase.firestore.FieldValue.arrayUnion(this.my_username),
@@ -86,60 +121,58 @@ var app = new Vue({
           console.error("Error updating document: ", error);
         });
     },
-    
-    
-    addNewTweet: function () {
-      // get the current value of new_tweet
-      var new_tweet_text = this.new_tweet;
-      var active_username = this.my_username;
-      db.collection("tweets").add({
-        username: active_username,
-        content: new_tweet_text,
-        timestamp: new Date(),
-        likes: [],
-      })
-        .then(() => {
-          console.log("Document successfully written!");
-          this.new_tweet = "";
-        })
-        .catch((error) => {
-          console.error("Error writing document: ", error);
-        });
-    },
 
-    makeAccount(){
-      const usersRef = db.collection("users").doc(document.getElementById('username').value)
-      usersRef.get()
-        .then ((docSnapshot) => {
-          if (docSnapshot.exists){
-            alert ("Username taken. Please try another.")
-          }
-          else{
-            usersRef.set({
-              first: document.getElementById('first').value,
-              last: document.getElementById('last').value,
-              bio: document.getElementById('bio').value,
-              password: document.getElementById('password').value,
-              avatar: localStorage.getItem('pigeon_avatar')
 
-            })
-            .then(() => {
-              console.log("Document successfully written!");
-              localStorage.setItem('pigeon_user', document.getElementById('username').value)
-              window.location.replace("home.html")
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            })
-          }
+
+
+  addNewTweet: function () {
+    // get the current value of new_tweet
+    var new_tweet_text = this.new_tweet;
+    var active_username = this.my_username;
+    db.collection("tweets").add({
+      username: active_username,
+      content: new_tweet_text,
+      timestamp: new Date(),
+      likes: [],
+    })
+      .then(() => {
+        console.log("Document successfully written!");
+        this.new_tweet = "";
       })
-    }
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
   },
+
+  addNewMessage: function () {
+    var new_message_text = this.new_message;
+    var new_user_text = this.new_user;
+    var active_username = this.my_username;
+    db.collection("messages").add({
+      username: active_username,
+      content: new_message_text,
+      timestamp: new Date(),
+      to: new_user_text,
+
+    })
+      .then(() => {
+        console.log("Document successfully written!");
+        this.new_message = "";
+        this.new_user = "";
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+  },
+},
 
 
   mounted() {
-    this.getTweetsFromFirestore();
-  }
+  this.getTweetsFromFirestore();
+  this.getMessagesFromFirestore();
+}
+
+
 })
 
 

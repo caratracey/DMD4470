@@ -54,11 +54,78 @@
                     </v-img>
 
                 </v-toolbar>
+
+                
                 <v-container class="py-0 fill-height" fluid
                     style="background: url('img/background6.jpg') no-repeat center center fixed; background-size:cover">
                     <v-row align="center" justify="center" class="pa-4">
 
                     </v-row>
+
+
+                    <v-container class="py-0 fill-height" fluid
+                    style="background: url('img/background6.jpg') no-repeat center center fixed; background-size:cover">
+                    <v-row align="center" justify="center" class="pa-4">
+                      
+                            <v-list-item-avatar color="white" style = "height:100px; width: 100px">
+                                <v-img alt=""  
+                                    src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light'">
+                                </v-img>
+                                
+                            </v-list-item-avatar>                           
+                    </v-row>
+
+                    <v-row v-for="tweet in tweets" align="center" justify="center" class="pa-4">
+                        <v-card class="mx-auto" color="#ffffff" width="550px">
+                            <v-card-text>
+                                <h3 class="pt-5">{{tweet.content}}</h3>
+                                <p class="pt-5">{{tweet.timestamp}}</p>
+
+                                <!--h4 v-if="tweet.username = my_username">ME</h4>-->
+                            </v-card-text>
+
+                            <v-card-actions>
+                                <v-list-item class="grow">
+                                    <v-list-item-avatar color="grey darken-5">
+                                        <v-img class="elevation-6" alt=""
+                                            src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light'">
+                                        </v-img>
+                                    </v-list-item-avatar>
+
+                                    <v-list-item-content>
+                                        <v-list-item-title>{{tweet.username}}</v-list-item-title>
+                                    </v-list-item-content>
+
+                                    <v-row align="center" justify="end">
+                                        <!-- This button should be red if I (active username) have liked this tweet. -->
+                                        <v-icon v-if="!tweet.isLiked" class="mr-1" @click="likeTweet(tweet.id)">
+                                            mdi-heart
+                                        </v-icon>
+
+                                        <v-icon v-if="tweet.isLiked" class="mr-1" color="red"
+                                            @click="unlikeTweet(tweet.id)">
+                                            mdi-heart
+                                        </v-icon>
+
+
+                                        <span class="subheading mr-2">{{tweet.numberOfLikes}}</span>
+
+                                       
+
+
+
+                                        <!--<v-icon>
+                                            mdi-share
+                                        </v-icon>-->
+
+
+                                    </v-row>
+                                </v-list-item>
+                            </v-card-actions>
+                        </v-card>
+                    </v-row>
+                    
+
 
 
                 </v-container>
